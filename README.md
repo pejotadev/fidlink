@@ -1,4 +1,4 @@
-# 🏦 FidLink API
+# 🏦 FidLink API - Personal Credit System
 
 <div align="center">
 
@@ -9,291 +9,380 @@
 [![NestJS](https://img.shields.io/badge/nestjs-v10.0.0-red)](https://nestjs.com/)
 [![TypeScript](https://img.shields.io/badge/typescript-v5.0.0-blue)](https://www.typescriptlang.org/)
 
-[![GitHub Issues](https://img.shields.io/github/issues/pejotadev/fidlink)](https://github.com/pejotadev/fidlink/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/pejotadev/fidlink)](https://github.com/pejotadev/fidlink/pulls)
-[![Last Commit](https://img.shields.io/github/last-commit/pejotadev/fidlink)](https://github.com/pejotadev/fidlink/commits/main)
-[![Dependabot](https://img.shields.io/badge/dependabot-enabled-brightgreen)](https://github.com/pejotadev/fidlink/pulls?q=is%3Apr+author%3Aapp%2Fdependabot)
+**🚀 Sistema completo de crédito pessoal implementado com Domain-Driven Design, cache híbrido e arquitetura enterprise.**
 
-**🚀 Sistema completo de crédito pessoal com Domain-Driven Design, cache híbrido e arquitetura robusta.**
-
-[📖 Documentação](API_GUIDE.md) • [🧪 Testar API](curl-examples.txt) • [🐛 Reportar Bug](https://github.com/pejotadev/fidlink/issues/new/choose) • [✨ Solicitar Feature](https://github.com/pejotadev/fidlink/issues/new/choose)
+[📖 API Guide](API_GUIDE.md) • [🧪 Examples](examples/) • [🐛 Report Bug](https://github.com/pejotadev/fidlink/issues/new) • [✨ Request Feature](https://github.com/pejotadev/fidlink/issues/new)
 
 </div>
 
 ---
 
-API NestJS completa para gestão de sistema de crédito pessoal com eligibilidade, simulação e contratos.
+## 📋 Visão Geral
 
-## Funcionalidades
+O **FidLink** é uma API completa para gestão de sistema de crédito pessoal que conecta clientes a um marketplace de fundos de investimento. Implementado em **NestJS** seguindo princípios de **Domain-Driven Design (DDD)**, oferece um fluxo completo desde a elegibilidade até a contratação de empréstimos.
 
-- ✅ Módulo Client com endpoints REST
-- ✅ Validação de dados com class-validator
-- ✅ Banco de dados MySQL com Prisma ORM
-- ✅ Docker e Docker Compose para desenvolvimento
-- ✅ Configuração para deploy na Vercel
+### ✨ Características Principais
 
-## Endpoints
+- 🏗️ **Arquitetura DDD** - Domain, Application, Infrastructure e Presentation layers
+- 🔍 **Sistema de Elegibilidade** - Avaliação automática baseada em critérios de fundos
+- 💰 **Simulação de Ofertas** - Cálculo PMT com otimização automática
+- 📋 **Gestão de Contratos** - Criação e acompanhamento de contratos
+- ⚡ **Cache Híbrido** - Redis + In-Memory com decorators customizados
+- 🧪 **Testes Abrangentes** - Unitários, E2E com mocks e banco real
+- 🐳 **Docker Ready** - Configuração completa para desenvolvimento
+- 🚀 **Deploy Vercel** - Pronto para produção
 
-### POST /client
-Cadastra um novo cliente.
+## 🚀 Quick Start
 
-**Body:**
-```json
-{
-  "nome": "João Silva",
-  "dataNascimento": "1990-01-15",
-  "cpf": "123.456.789-00",
-  "rendaLiquidaMensal": 5000.50
-}
-```
+### 1. Configuração do Ambiente
 
-### GET /client/:id
-Busca um cliente pelo ID.
-
-**Response:**
-```json
-{
-  "id": "clp...",
-  "nome": "João Silva",
-  "dataNascimento": "1990-01-15T00:00:00.000Z",
-  "cpf": "123.456.789-00",
-  "rendaLiquidaMensal": 5000.5,
-  "createdAt": "2024-01-01T10:00:00.000Z",
-  "updatedAt": "2024-01-01T10:00:00.000Z"
-}
-```
-
-## Desenvolvimento
-
-### Pré-requisitos
-- Node.js 18+
-- MySQL 8.0+ (ou Docker)
-- Docker e Docker Compose (opcional)
-
-### Configuração Rápida
-
-Execute o script de configuração:
 ```bash
-npm run setup
-```
+# Clone o repositório
+git clone https://github.com/pejotadev/fidlink.git
+cd fidlink
 
-Ou manualmente:
-
-1. **Instale as dependências:**
-```bash
+# Instalar dependências
 npm install
-```
 
-2. **Configure as variáveis de ambiente:**
-```bash
+# Configurar variáveis de ambiente
 cp .env.example .env
 # Edite o arquivo .env com suas configurações
 ```
 
-3. **Opção A - Usando Docker:**
+### 2. Banco de Dados
+
+**Opção A - Docker (Recomendado):**
 ```bash
-# Inicie o Docker Desktop primeiro
-docker compose up -d
+# Iniciar serviços
+npm run docker:up
+
+# Aplicar schema
+npm run db:push
+
+# Popular fundos iniciais
+npm run db:seed
 ```
 
-4. **Opção B - MySQL local:**
+**Opção B - Local:**
 ```bash
-# Configure sua instância MySQL local
-# Atualize a DATABASE_URL no .env
-```
+# Configure sua instância MySQL/SQLite
+# Atualize DATABASE_URL no .env
 
-5. **Execute as migrations:**
-```bash
+# Executar migrations
 npm run db:migrate
+
+# Popular fundos
+npm run db:seed
 ```
 
-6. **Inicie o servidor:**
+### 3. Executar a Aplicação
+
 ```bash
+# Desenvolvimento
 npm run start:dev
+
+# Produção
+npm run build
+npm run start:prod
 ```
 
 A API estará disponível em: `http://localhost:3000`
 
-### Scripts Disponíveis
+## 🛠️ Tecnologias
 
-```bash
-# Configuração
-npm run setup          # Script de configuração automática
+- **Framework:** NestJS v10
+- **Language:** TypeScript v5
+- **Database:** SQLite/MySQL com Prisma ORM
+- **Cache:** Redis + Cache Manager
+- **Validation:** Class Validator & Class Transformer
+- **Testing:** Jest + Supertest
+- **Containerization:** Docker & Docker Compose
+- **Deploy:** Vercel Ready
 
-# Desenvolvimento
-npm run start:dev      # Servidor em modo watch
-npm run start:debug    # Servidor em modo debug
+## 🌐 API Endpoints
 
-# Build e Produção
-npm run build          # Build da aplicação
-npm run start:prod     # Executa versão de produção
+### 👤 Cliente
+- `POST /client` - Cadastrar novo cliente
+- `GET /client/:id` - Buscar cliente por ID
 
-# Testes
-npm test               # Executa testes unitários
-npm run test:watch     # Testes em modo watch
-npm run test:cov       # Testes com coverage
+### ✅ Elegibilidade  
+- `POST /eligibility/check` - Verificar elegibilidade para fundos
 
-# Testes E2E
-npm run test:e2e:mock      # E2E com mocks (sem banco)
-npm run test:e2e:mock:cov  # E2E com coverage
-npm run test:e2e:setup     # E2E com banco real
+### 💰 Simulação
+- `POST /simulation` - Criar simulação e gerar ofertas
 
-# Prisma
-npm run db:generate    # Gera o client Prisma
-npm run db:migrate     # Executa migrations
-npm run db:push        # Aplica schema ao banco
-npm run db:studio      # Interface visual do banco
-npm run db:reset       # Reset completo do banco
+### 📋 Contrato
+- `POST /contract` - Fechar contrato baseado em oferta
+- `GET /contract/client/:clientId` - Listar contratos do cliente
 
-# Docker
-npm run docker:up      # Inicia serviços
-npm run docker:down    # Para serviços
-npm run docker:logs    # Visualiza logs
+### 🔧 Utilitários
+- `GET /health` - Health check
+- `POST /cache/clear` - Limpar cache (desenvolvimento)
 
-# Qualidade de Código
-npm run lint           # ESLint
-npm run format         # Prettier
-```
+> 📖 Para documentação completa dos endpoints, exemplos e fluxos, consulte o [API Guide](API_GUIDE.md).
 
-## Deploy na Vercel
-
-1. Configure as variáveis de ambiente no painel da Vercel
-2. Conecte seu repositório GitHub
-3. A Vercel detectará automaticamente a configuração do NestJS
-
-### Variáveis de Ambiente (Vercel)
-
-```
-DATABASE_URL=mysql://usuario:senha@host:porta/database
-NODE_ENV=production
-```
-
-## Validações
-
-- **Nome**: Obrigatório, string não vazia
-- **Data de Nascimento**: Formato ISO date string
-- **CPF**: Formato 000.000.000-00, único no sistema
-- **Renda Líquida Mensal**: Número positivo
-
-## Testando a API
-
-### Health Check
-```bash
-curl http://localhost:3000/health
-```
-
-### Criar Cliente
-```bash
-curl -X POST http://localhost:3000/client \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nome": "João Silva",
-    "dataNascimento": "1990-01-15",
-    "cpf": "123.456.789-00",
-    "rendaLiquidaMensal": 5000.50
-  }'
-```
-
-### Buscar Cliente
-```bash
-# Substitua {id} pelo ID retornado na criação
-curl http://localhost:3000/client/{id}
-```
-
-### Testando a API
-
-**VS Code REST Client:**
-O projeto inclui exemplos de requisições em `examples/requests.http` para uso com a extensão REST Client do VS Code.
-
-**Comandos cURL:**
-- `curl-commands.txt` - Comandos cURL prontos para uso
-- Inclui casos de sucesso, erro e validações
-- Pode ser importado diretamente no Postman
-
-**Postman:**
-- `postman/FidLink-API.postman_collection.json` - Coleção completa do Postman
-- 11 requisições pré-configuradas com testes automatizados
-- Variáveis de ambiente (`base_url`, `client_id`)
-- Validações automáticas de resposta
-
-### Testes Automatizados
-
-**Testes Unitários:**
-```bash
-# Testes unitários
-npm test
-
-# Testes com coverage
-npm run test:cov
-
-# Testes em modo watch
-npm run test:watch
-```
-
-**Testes End-to-End (E2E):**
-```bash
-# E2E com mocks (roda sem banco de dados)
-npm run test:e2e:mock
-
-# E2E com coverage
-npm run test:e2e:mock:cov
-
-# E2E em modo watch
-npm run test:e2e:mock:watch
-
-# E2E com banco real (requer MySQL rodando)
-npm run test:e2e:setup
-```
-
-**Executar todos os testes:**
-```bash
-# Todos os testes (unitários + e2e mock)
-npm test && npm run test:e2e:mock
-```
-
-## Estrutura do Projeto
+## 🏗️ Arquitetura DDD
 
 ```
 src/
-├── client/              # Módulo Client
-│   ├── dto/            # Data Transfer Objects
-│   │   ├── create-client.dto.ts
-│   │   └── client-response.dto.ts
-│   ├── client.controller.ts  # Endpoints REST
-│   ├── client.service.ts     # Lógica de negócio
-│   ├── client.service.spec.ts # Testes unitários
-│   └── client.module.ts      # Configuração do módulo
-├── prisma/             # Configuração Prisma
-│   ├── prisma.service.ts
-│   └── prisma.module.ts
-├── health/             # Health check
-│   └── health.controller.ts
-├── app.module.ts       # Módulo principal
-└── main.ts            # Entry point
-
-prisma/
-├── schema.prisma       # Schema do banco
-├── schema-test.prisma  # Schema para testes
-└── migrations/         # Migrations SQL
-
-test/
-├── app.e2e-spec.ts         # Testes E2E básicos
-├── client.e2e-spec.ts      # Testes E2E com banco real
-├── client-mock.e2e-spec.ts # Testes E2E com mocks
-├── setup-e2e.ts           # Setup para testes E2E
-├── jest-e2e.json          # Config Jest E2E com banco
-└── jest-e2e-mock.json     # Config Jest E2E com mocks
-
-examples/
-├── requests.http       # Exemplos de requisições REST Client
-└── demo.js            # Script de demonstração da API
-
-postman/
-└── FidLink-API.postman_collection.json  # Coleção do Postman
-
-curl-commands.txt       # Comandos cURL prontos para uso
-
-scripts/
-├── setup.sh           # Script de configuração inicial
-└── test-e2e.sh        # Script para testes E2E com banco
+├── domain/                 # 🧠 Regras de Negócio
+│   ├── client/            # Entidades e serviços de cliente
+│   ├── fund/              # Entidades e critérios de fundos  
+│   ├── eligibility/       # Serviços de elegibilidade
+│   ├── simulation/        # Entidades e cálculos de simulação
+│   └── contract/          # Entidades e serviços de contrato
+├── application/           # 🎯 Casos de Uso
+│   ├── client/           # Use cases de cliente
+│   ├── eligibility/      # Use cases de elegibilidade
+│   ├── simulation/       # Use cases de simulação
+│   └── contract/         # Use cases de contrato
+├── infrastructure/        # 🔧 Persistência e Infra
+│   ├── repositories/     # Implementações de repositórios
+│   └── cache/            # Sistema de cache híbrido
+├── presentation/          # 🌐 Controllers e DTOs
+│   └── controllers/      # Endpoints REST
+└── modules/              # 📦 Módulos NestJS
 ```
+
+### 🎯 Principais Fluxos
+
+1. **Cliente** → Cadastro com validações de CPF e dados
+2. **Elegibilidade** → Avaliação automática baseada em critérios dos fundos
+3. **Simulação** → Geração de ofertas com cálculo PMT otimizado
+4. **Contrato** → Fechamento e gestão de contratos ativos
+
+## 📊 Modelo de Dados
+
+```mermaid
+erDiagram
+    Client ||--o{ Simulation : creates
+    Client ||--o{ Contract : signs
+    Fund ||--o{ EligibilityCriteria : has
+    Fund ||--o{ Offer : generates
+    Fund ||--o{ Contract : funds
+    Simulation ||--o{ Offer : contains
+    Offer ||--|| Contract : becomes
+    
+    Client {
+        string id PK
+        string nome
+        datetime dataNascimento
+        string cpf UK
+        float rendaLiquidaMensal
+    }
+    
+    Fund {
+        string id PK
+        string name
+        float baseInterestRate
+        boolean isActive
+    }
+    
+    EligibilityCriteria {
+        string id PK
+        string fundId FK
+        string criteriaType
+        string value
+    }
+    
+    Simulation {
+        string id PK
+        string clientId FK
+        float requestedAmount
+        string purpose
+        datetime firstPaymentDate
+    }
+    
+    Offer {
+        string id PK
+        string simulationId FK
+        string fundId FK
+        float loanAmount
+        float monthlyPayment
+        int numberOfInstallments
+    }
+    
+    Contract {
+        string id PK
+        string clientId FK
+        string fundId FK
+        string offerId FK UK
+        string contractNumber UK
+        string status
+    }
+```
+
+## 🧪 Testes
+
+### Estratégia de Testes
+
+- **Unitários:** Cobertura de services e domain logic
+- **E2E com Mocks:** Testes rápidos sem dependências externas
+- **E2E com Banco:** Testes de integração completos
+
+### Comandos de Teste
+
+```bash
+# Testes unitários
+npm test
+npm run test:watch
+npm run test:cov
+
+# Testes E2E com mocks (rápido)
+npm run test:e2e:mock
+npm run test:e2e:mock:cov
+
+# Testes E2E com banco real (completo)
+npm run test:e2e:setup
+npm run test:e2e:full
+
+# Todos os testes
+npm test && npm run test:e2e:mock
+```
+
+## 📁 Scripts Úteis
+
+```bash
+# 🏗️ Desenvolvimento
+npm run start:dev      # Servidor em modo watch
+npm run start:debug    # Servidor em modo debug
+
+# 🧪 Qualidade
+npm run lint           # ESLint
+npm run format         # Prettier
+npm run format:check   # Verificar formatação
+
+# 🗄️ Banco de Dados  
+npm run db:generate    # Gerar client Prisma
+npm run db:migrate     # Executar migrations
+npm run db:push        # Aplicar schema
+npm run db:studio      # Interface visual
+npm run db:reset       # Reset completo
+npm run db:seed        # Popular fundos
+
+# 🐳 Docker
+npm run docker:up      # Iniciar serviços
+npm run docker:down    # Parar serviços  
+npm run docker:logs    # Visualizar logs
+
+# 🚀 Produção
+npm run build          # Build da aplicação
+npm run start:prod     # Executar produção
+npm run build:vercel   # Build otimizado para Vercel
+```
+
+## 🚀 Deploy
+
+### Vercel (Recomendado)
+
+1. **Configure as variáveis de ambiente:**
+   ```
+   DATABASE_URL=your_production_database_url
+   NODE_ENV=production
+   REDIS_URL=your_redis_url (opcional)
+   ```
+
+2. **Deploy automático:**
+   - Conecte o repositório GitHub à Vercel
+   - A configuração será detectada automaticamente via `vercel.json`
+
+### Docker
+
+```bash
+# Build da imagem
+docker build -t fidlink-api .
+
+# Executar container
+docker run -p 3000:3000 \
+  -e DATABASE_URL="your_database_url" \
+  fidlink-api
+```
+
+## 🔒 Validações e Regras de Negócio
+
+### Validações de Cliente
+- **Nome:** Obrigatório, string não vazia
+- **CPF:** Formato válido e único no sistema
+- **Data de Nascimento:** Formato ISO válido
+- **Renda:** Valor numérico positivo
+
+### Critérios de Elegibilidade
+- **Idade Mínima:** Por fundo (ex: 18, 21, 30 anos)
+- **Comprometimento de Renda:** Máximo por fundo (ex: 20%, 25%, 32%)
+- **Valor Mínimo:** Threshold de empréstimo por fundo
+- **Propósitos Excluídos:** Restrições por tipo de uso
+
+### Cálculos Financeiros
+- **Fórmula PMT:** `PMT = PV * i / (1 - (1 + i)^(-n))`
+- **Otimização Automática:** Ajuste do valor para caber no comprometimento
+- **Validação de Vencimento:** Primeira parcela em até 45 dias
+
+## 📚 Exemplos de Uso
+
+### Fluxo Completo via cURL
+
+```bash
+# 1. Criar cliente
+curl -X POST http://localhost:3000/client \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "Maria Silva",
+    "dataNascimento": "1985-03-15", 
+    "cpf": "123.456.789-09",
+    "rendaLiquidaMensal": 8000.00
+  }'
+
+# 2. Verificar elegibilidade  
+curl -X POST http://localhost:3000/eligibility/check \
+  -H "Content-Type: application/json" \
+  -d '{
+    "clientId": "CLIENT_ID_RETORNADO",
+    "requestedAmount": 30000,
+    "purpose": "shopping",
+    "firstPaymentDate": "2025-10-15"
+  }'
+
+# 3. Criar simulação
+curl -X POST http://localhost:3000/simulation \
+  -H "Content-Type: application/json" \
+  -d '{
+    "clientId": "CLIENT_ID_RETORNADO", 
+    "requestedAmount": 30000,
+    "purpose": "shopping",
+    "firstPaymentDate": "2025-10-15",
+    "numberOfInstallments": 24
+  }'
+
+# 4. Fechar contrato
+curl -X POST http://localhost:3000/contract \
+  -H "Content-Type: application/json" \
+  -d '{
+    "offerId": "OFFER_ID_RETORNADO"
+  }'
+```
+
+### Exemplos Adicionais
+
+- **REST Client:** `examples/requests.http`
+- **Postman Collection:** `postman/FidLink-API.postman_collection.json`
+- **Demo Script:** `examples/demo.js`
+
+## 🤝 Contribuindo
+
+1. Fork o projeto
+2. Crie uma branch: `git checkout -b feature/nova-funcionalidade`
+3. Commit suas mudanças: `git commit -m 'Add nova funcionalidade'`
+4. Push para a branch: `git push origin feature/nova-funcionalidade`
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+<div align="center">
+
+**🎉 Sistema completo de crédito implementado com DDD e padrões enterprise!**
+
+</div>
