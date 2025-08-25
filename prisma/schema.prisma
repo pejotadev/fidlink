@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./test.db"
+}
+
+model Client {
+  id                String     @id @default(cuid())
+  nome              String
+  dataNascimento    DateTime
+  cpf               String     @unique
+  rendaLiquidaMensal Float
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  
+  // Relations
+  simulations       Simulation[]
+  contracts         Contract[]
+
+  @@map("clients")
+}
+
+model Fund {
+  id                String   @id @default(cuid())
+  name              String
+  baseInterestRate  Float    // Taxa base mensal em decimal (ex: 0.0275 para 2,75%)
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  eligibilityCriteria EligibilityCriteria[]
+  offers              Offer[]
+  contracts           Contract[]
+
+  @@map("funds")
+}
+
+model EligibilityCriteria {
+  id            String   @id @default(cuid())
+  fundId        String
+  criteriaType  String   // min_age, max_income_commitment_percentage, min_loan_amount, excluded_purposes
+  value         String   // JSON string for complex values
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relations
+  fund          Fund     @relation(fields: [fundId], references: [id], onDelete: Cascade)
+
+  @@map("eligibility_criteria")
+}
+
+model Simulation {
+  id                    String   @id @default(cuid())
+  clientId              String
+  requestedAmount       Float
+  purpose               String   // business_investment, travel, shopping
+  firstPaymentDate      DateTime
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  client                Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  offers                Offer[]
+
+  @@map("simulations")
+}
+
+model Offer {
+  id                    String     @id @default(cuid())
+  simulationId          String
+  fundId                String
+  loanAmount            Float
+  monthlyPayment        Float
+  numberOfInstallments  Int
+  totalAmount           Float
+  interestRate          Float      // Taxa aplicada para esta oferta
+  isAccepted            Boolean    @default(false)
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+  
+  // Relations
+  simulation            Simulation @relation(fields: [simulationId], references: [id], onDelete: Cascade)
+  fund                  Fund       @relation(fields: [fundId], references: [id], onDelete: Cascade)
+  contract              Contract?
+
+  @@map("offers")
+}
+
+model Contract {
+  id                    String   @id @default(cuid())
+  clientId              String
+  fundId                String
+  offerId               String   @unique
+  contractNumber        String   @unique
+  loanAmount            Float
+  monthlyPayment        Float
+  numberOfInstallments  Int
+  totalAmount           Float
+  interestRate          Float
+  purpose               String
+  firstPaymentDate      DateTime
+  status                String   @default("active") // active, completed, cancelled
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  client                Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  fund                  Fund     @relation(fields: [fundId], references: [id], onDelete: Cascade)
+  offer                 Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
+
+  @@map("contracts")
+}

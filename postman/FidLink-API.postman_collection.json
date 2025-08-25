@@ -1,0 +1,487 @@
+{
+  "info": {
+    "name": "FidLink API",
+    "description": "API NestJS para gestão de clientes com validações e banco MySQL",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "client_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response has correct structure', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('status', 'ok');",
+              "    pm.expect(jsonData).to.have.property('timestamp');",
+              "    pm.expect(jsonData).to.have.property('service', 'fidlink-api');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "Criar Cliente - Caso de Sucesso",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Response has client data', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('id');",
+              "    pm.expect(jsonData).to.have.property('nome', 'João Silva');",
+              "    pm.expect(jsonData).to.have.property('cpf', '123.456.789-00');",
+              "    pm.expect(jsonData).to.have.property('rendaLiquidaMensal', 5000.5);",
+              "    pm.expect(jsonData).to.have.property('createdAt');",
+              "    pm.expect(jsonData).to.have.property('updatedAt');",
+              "    ",
+              "    // Save client ID for other requests",
+              "    pm.collectionVariables.set('client_id', jsonData.id);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"João Silva\",\n  \"dataNascimento\": \"1990-01-15\",\n  \"cpf\": \"123.456.789-00\",\n  \"rendaLiquidaMensal\": 5000.50\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/client",
+          "host": ["{{base_url}}"],
+          "path": ["client"]
+        }
+      }
+    },
+    {
+      "name": "Buscar Cliente por ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response contains client data', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('id');",
+              "    pm.expect(jsonData).to.have.property('nome');",
+              "    pm.expect(jsonData).to.have.property('cpf');",
+              "    pm.expect(jsonData).to.have.property('rendaLiquidaMensal');",
+              "    pm.expect(jsonData).to.have.property('dataNascimento');",
+              "    pm.expect(jsonData).to.have.property('createdAt');",
+              "    pm.expect(jsonData).to.have.property('updatedAt');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/client/{{client_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["client", "{{client_id}}"]
+        }
+      }
+    },
+    {
+      "name": "Criar Segundo Cliente",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Different client created', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('nome', 'Maria Santos');",
+              "    pm.expect(jsonData).to.have.property('cpf', '987.654.321-00');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Maria Santos\",\n  \"dataNascimento\": \"1985-05-20\",\n  \"cpf\": \"987.654.321-00\",\n  \"rendaLiquidaMensal\": 3500.75\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/client",
+          "host": ["{{base_url}}"],
+          "path": ["client"]
+        }
+      }
+    },
+    {
+      "name": "Erro - CPF Formato Inválido",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 400', function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Error message mentions CPF format', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('message');",
+              "    const messageStr = JSON.stringify(jsonData.message);",
+              "    pm.expect(messageStr).to.include('CPF deve estar no formato');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Teste CPF Inválido\",\n  \"dataNascimento\": \"1990-01-01\",\n  \"cpf\": \"12345678900\",\n  \"rendaLiquidaMensal\": 1000\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/client",
+          "host": ["{{base_url}}"],
+          "path": ["client"]
+        }
+      }
+    },
+    {
+      "name": "Erro - CPF Duplicado",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 409', function () {",
+              "    pm.response.to.have.status(409);",
+              "});",
+              "",
+              "pm.test('Error message is CPF já cadastrado', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('message', 'CPF já cadastrado');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Teste CPF Duplicado\",\n  \"dataNascimento\": \"1992-12-25\",\n  \"cpf\": \"123.456.789-00\",\n  \"rendaLiquidaMensal\": 2000\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/client",
+          "host": ["{{base_url}}"],
+          "path": ["client"]
+        }
+      }
+    },
+    {
+      "name": "Erro - Campo Obrigatório Faltando",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 400', function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Error mentions missing nome field', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('message');",
+              "    const messageStr = JSON.stringify(jsonData.message);",
+              "    pm.expect(messageStr).to.include('nome');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"dataNascimento\": \"1990-01-01\",\n  \"cpf\": \"111.222.333-44\",\n  \"rendaLiquidaMensal\": 1000\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/client",
+          "host": ["{{base_url}}"],
+          "path": ["client"]
+        }
+      }
+    },
+    {
+      "name": "Erro - Data Nascimento Inválida",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 400', function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Error mentions date format', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('message');",
+              "    const messageStr = JSON.stringify(jsonData.message);",
+              "    pm.expect(messageStr).to.include('date');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Teste Data Inválida\",\n  \"dataNascimento\": \"01/01/1990\",\n  \"cpf\": \"222.333.444-55\",\n  \"rendaLiquidaMensal\": 1000\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/client",
+          "host": ["{{base_url}}"],
+          "path": ["client"]
+        }
+      }
+    },
+    {
+      "name": "Erro - Renda Negativa",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 400', function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Error mentions positive number', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('message');",
+              "    const messageStr = JSON.stringify(jsonData.message);",
+              "    pm.expect(messageStr).to.include('positive');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Teste Renda Negativa\",\n  \"dataNascimento\": \"1990-01-01\",\n  \"cpf\": \"333.444.555-66\",\n  \"rendaLiquidaMensal\": -500\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/client",
+          "host": ["{{base_url}}"],
+          "path": ["client"]
+        }
+      }
+    },
+    {
+      "name": "Erro - Cliente Não Encontrado",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 404', function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "",
+              "pm.test('Error message is Cliente não encontrado', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('message', 'Cliente não encontrado');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/client/id-inexistente",
+          "host": ["{{base_url}}"],
+          "path": ["client", "id-inexistente"]
+        }
+      }
+    },
+    {
+      "name": "Conversão - Renda como String",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Renda converted to number', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('rendaLiquidaMensal');",
+              "    pm.expect(typeof jsonData.rendaLiquidaMensal).to.equal('number');",
+              "    pm.expect(jsonData.rendaLiquidaMensal).to.equal(4500.25);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Teste Conversão\",\n  \"dataNascimento\": \"1990-01-01\",\n  \"cpf\": \"666.777.888-99\",\n  \"rendaLiquidaMensal\": \"4500.25\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/client",
+          "host": ["{{base_url}}"],
+          "path": ["client"]
+        }
+      }
+    }
+  ]
+}
+

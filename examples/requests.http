@@ -1,0 +1,30 @@
+### Health Check
+GET http://localhost:3000/health
+
+### Criar Cliente
+POST http://localhost:3000/client
+Content-Type: application/json
+
+{
+  "nome": "João Silva",
+  "dataNascimento": "1990-01-15",
+  "cpf": "123.456.789-00",
+  "rendaLiquidaMensal": 5000.50
+}
+
+### Criar Cliente com erro (CPF inválido)
+POST http://localhost:3000/client
+Content-Type: application/json
+
+{
+  "nome": "Maria Santos",
+  "dataNascimento": "1985-05-20",
+  "cpf": "123456789",
+  "rendaLiquidaMensal": 3000
+}
+
+### Buscar Cliente por ID (substitua pelo ID retornado)
+GET http://localhost:3000/client/clp123456789
+
+### Buscar Cliente inexistente
+GET http://localhost:3000/client/inexistente

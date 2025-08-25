@@ -1,0 +1,332 @@
+# 🏦 FidLink API - Comandos cURL (Versão Completa)
+# =======================================================
+# 
+# ⚠️  ATENÇÃO: Este arquivo contém apenas os endpoints de CLIENTE
+# 📄 Para endpoints completos (Eligibility, Simulation, Contract): curl-examples.txt
+# 
+# Certifique-se de que a API está rodando em http://localhost:3000
+# Para iniciar: npm run start:dev
+#
+# Para usar no Postman: 
+# 1. Abra o Postman
+# 2. Clique em "Import" 
+# 3. Cole qualquer comando cURL abaixo
+# 4. O Postman converterá automaticamente para uma requisição
+
+# ===========================================
+# 1. HEALTH CHECK - Verificar se API está funcionando
+# ===========================================
+
+curl -X GET http://localhost:3000/health \
+  -H "Accept: application/json"
+
+# Resposta esperada:
+# {
+#   "status": "ok",
+#   "timestamp": "2024-01-01T10:00:00.000Z",
+#   "service": "fidlink-api"
+# }
+
+# ===========================================
+# 2. CRIAR CLIENTE - Caso de sucesso
+# ===========================================
+
+curl -X POST http://localhost:3000/client \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "nome": "João Silva",
+    "dataNascimento": "1990-01-15",
+    "cpf": "123.456.789-00",
+    "rendaLiquidaMensal": 5000.50
+  }'
+
+# Resposta esperada (Status: 201):
+# {
+#   "id": "clp...",
+#   "nome": "João Silva",
+#   "dataNascimento": "1990-01-15T00:00:00.000Z",
+#   "cpf": "123.456.789-00",
+#   "rendaLiquidaMensal": 5000.5,
+#   "createdAt": "2024-01-01T10:00:00.000Z",
+#   "updatedAt": "2024-01-01T10:00:00.000Z"
+# }
+
+# ===========================================
+# 3. CRIAR OUTRO CLIENTE - Para testar múltiplos clientes
+# ===========================================
+
+curl -X POST http://localhost:3000/client \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "nome": "Maria Santos",
+    "dataNascimento": "1985-05-20",
+    "cpf": "987.654.321-00",
+    "rendaLiquidaMensal": 3500.75
+  }'
+
+# ===========================================
+# 4. BUSCAR CLIENTE POR ID - Substitua {CLIENT_ID} pelo ID retornado
+# ===========================================
+
+# IMPORTANTE: Substitua {CLIENT_ID} pelo ID real retornado na criação
+curl -X GET http://localhost:3000/client/{CLIENT_ID} \
+  -H "Accept: application/json"
+
+# Exemplo com ID fictício:
+curl -X GET http://localhost:3000/client/clp123456789 \
+  -H "Accept: application/json"
+
+# Resposta esperada (Status: 200):
+# {
+#   "id": "clp123456789",
+#   "nome": "João Silva",
+#   "dataNascimento": "1990-01-15T00:00:00.000Z",
+#   "cpf": "123.456.789-00",
+#   "rendaLiquidaMensal": 5000.5,
+#   "createdAt": "2024-01-01T10:00:00.000Z",
+#   "updatedAt": "2024-01-01T10:00:00.000Z"
+# }
+
+# ===========================================
+# 5. CASOS DE ERRO - Para testar validações
+# ===========================================
+
+# 5.1 CPF Inválido (formato incorreto)
+curl -X POST http://localhost:3000/client \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "nome": "Teste CPF Inválido",
+    "dataNascimento": "1990-01-01",
+    "cpf": "12345678900",
+    "rendaLiquidaMensal": 1000
+  }'
+
+# Resposta esperada (Status: 400):
+# {
+#   "message": ["CPF deve estar no formato 000.000.000-00"],
+#   "error": "Bad Request",
+#   "statusCode": 400
+# }
+
+# 5.2 CPF Duplicado (usar o mesmo CPF do primeiro cliente)
+curl -X POST http://localhost:3000/client \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "nome": "Teste CPF Duplicado",
+    "dataNascimento": "1992-12-25",
+    "cpf": "123.456.789-00",
+    "rendaLiquidaMensal": 2000
+  }'
+
+# Resposta esperada (Status: 409):
+# {
+#   "message": "CPF já cadastrado",
+#   "error": "Conflict",
+#   "statusCode": 409
+# }
+
+# 5.3 Campo obrigatório faltando (nome)
+curl -X POST http://localhost:3000/client \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "dataNascimento": "1990-01-01",
+    "cpf": "111.222.333-44",
+    "rendaLiquidaMensal": 1000
+  }'
+
+# Resposta esperada (Status: 400):
+# {
+#   "message": ["nome should not be empty", "nome must be a string"],
+#   "error": "Bad Request",
+#   "statusCode": 400
+# }
+
+# 5.4 Data de nascimento inválida
+curl -X POST http://localhost:3000/client \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "nome": "Teste Data Inválida",
+    "dataNascimento": "01/01/1990",
+    "cpf": "222.333.444-55",
+    "rendaLiquidaMensal": 1000
+  }'
+
+# Resposta esperada (Status: 400):
+# {
+#   "message": ["dataNascimento must be a valid ISO 8601 date string"],
+#   "error": "Bad Request",
+#   "statusCode": 400
+# }
+
+# 5.5 Renda líquida negativa
+curl -X POST http://localhost:3000/client \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "nome": "Teste Renda Negativa",
+    "dataNascimento": "1990-01-01",
+    "cpf": "333.444.555-66",
+    "rendaLiquidaMensal": -500
+  }'
+
+# Resposta esperada (Status: 400):
+# {
+#   "message": ["rendaLiquidaMensal must be a positive number"],
+#   "error": "Bad Request",
+#   "statusCode": 400
+# }
+
+# 5.6 Nome vazio
+curl -X POST http://localhost:3000/client \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "nome": "",
+    "dataNascimento": "1990-01-01",
+    "cpf": "444.555.666-77",
+    "rendaLiquidaMensal": 1000
+  }'
+
+# Resposta esperada (Status: 400):
+# {
+#   "message": ["nome should not be empty"],
+#   "error": "Bad Request",
+#   "statusCode": 400
+# }
+
+# 5.7 Campo extra não permitido
+curl -X POST http://localhost:3000/client \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "nome": "Teste Campo Extra",
+    "dataNascimento": "1990-01-01",
+    "cpf": "555.666.777-88",
+    "rendaLiquidaMensal": 1000,
+    "campoExtra": "não deveria existir"
+  }'
+
+# Resposta esperada (Status: 400):
+# {
+#   "message": ["property campoExtra should not exist"],
+#   "error": "Bad Request",
+#   "statusCode": 400
+# }
+
+# 5.8 Cliente não encontrado
+curl -X GET http://localhost:3000/client/id-inexistente \
+  -H "Accept: application/json"
+
+# Resposta esperada (Status: 404):
+# {
+#   "message": "Cliente não encontrado",
+#   "error": "Not Found",
+#   "statusCode": 404
+# }
+
+# ===========================================
+# 6. CASOS ESPECIAIS - Para testar transformações
+# ===========================================
+
+# 6.1 Renda como string (deve ser convertida para número)
+curl -X POST http://localhost:3000/client \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "nome": "Teste Conversão",
+    "dataNascimento": "1990-01-01",
+    "cpf": "666.777.888-99",
+    "rendaLiquidaMensal": "4500.25"
+  }'
+
+# Resposta esperada (Status: 201):
+# A renda deve aparecer como número: "rendaLiquidaMensal": 4500.25
+
+# ===========================================
+# 7. COMANDOS EM SEQUÊNCIA - Para testar fluxo completo
+# ===========================================
+
+# Sequência de testes recomendada:
+echo "=========================================="
+echo "Testando API FidLink - Sequência completa"
+echo "=========================================="
+
+echo "1. Health Check..."
+curl -s -X GET http://localhost:3000/health | grep -q "ok" && echo "✅ API funcionando" || echo "❌ API não respondeu"
+
+echo -e "\n2. Criando cliente..."
+RESPONSE=$(curl -s -X POST http://localhost:3000/client \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "Cliente Teste",
+    "dataNascimento": "1990-01-01",
+    "cpf": "123.123.123-12",
+    "rendaLiquidaMensal": 5000
+  }')
+
+CLIENT_ID=$(echo $RESPONSE | grep -o '"id":"[^"]*"' | cut -d'"' -f4)
+echo "Cliente criado com ID: $CLIENT_ID"
+
+echo -e "\n3. Buscando cliente..."
+curl -s -X GET "http://localhost:3000/client/$CLIENT_ID" | grep -q "$CLIENT_ID" && echo "✅ Cliente encontrado" || echo "❌ Cliente não encontrado"
+
+echo -e "\n4. Testando CPF duplicado..."
+curl -s -X POST http://localhost:3000/client \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "Duplicate",
+    "dataNascimento": "1990-01-01",
+    "cpf": "123.123.123-12",
+    "rendaLiquidaMensal": 5000
+  }' | grep -q "409\|CPF já cadastrado" && echo "✅ Validação de CPF funcionando" || echo "❌ Validação falhou"
+
+echo -e "\nTestes concluídos!"
+
+# ===========================================
+# 8. DICAS PARA USO NO POSTMAN
+# ===========================================
+
+# Para importar no Postman:
+# 1. Abra o Postman
+# 2. Clique em "Import" no canto superior esquerdo
+# 3. Selecione a aba "Raw text"
+# 4. Cole qualquer comando cURL deste arquivo
+# 5. Clique em "Continue" e depois "Import"
+# 6. O Postman criará automaticamente a requisição
+
+# Variáveis úteis no Postman:
+# - {{base_url}} = http://localhost:3000
+# - {{client_id}} = ID do cliente criado (defina manualmente após criar um cliente)
+
+# Para criar uma coleção completa no Postman:
+# 1. Importe alguns comandos cURL
+# 2. Crie uma nova coleção chamada "FidLink API"
+# 3. Mova as requisições para a coleção
+# 4. Configure variáveis de ambiente:
+#    - base_url: http://localhost:3000
+#    - client_id: (será preenchido dinamicamente)
+
+# ===========================================
+# 9. TROUBLESHOOTING
+# ===========================================
+
+# Se a API não responder:
+# 1. Verifique se está rodando: npm run start:dev
+# 2. Verifique a porta: http://localhost:3000
+# 3. Verifique logs no terminal onde a API está rodando
+
+# Se o banco de dados não estiver configurado:
+# 1. Suba o MySQL: docker compose up -d mysql
+# 2. Execute migrations: npm run db:migrate
+# 3. Reinicie a API: npm run start:dev
+
+# Para limpar dados de teste:
+# 1. Acesse: npm run db:studio
+# 2. Delete registros da tabela clients
+# 3. Ou reinicie o banco: npm run db:reset

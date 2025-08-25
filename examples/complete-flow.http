@@ -1,0 +1,156 @@
+### COMPLETE LOAN FLOW EXAMPLES
+
+### 1. Create a Client
+POST http://localhost:3000/client
+Content-Type: application/json
+
+{
+  "nome": "Maria da Silva",
+  "dataNascimento": "1985-03-15",
+  "cpf": "123.456.789-09",
+  "rendaLiquidaMensal": 8000.00
+}
+
+### 2. Check Eligibility
+POST http://localhost:3000/eligibility/check
+Content-Type: application/json
+
+{
+  "clientId": "{{CLIENT_ID_FROM_STEP_1}}",
+  "requestedAmount": 30000,
+  "purpose": "shopping",
+  "firstPaymentDate": "2025-10-15"
+}
+
+### 3. Create Simulation (Generate Offers)
+POST http://localhost:3000/simulation
+Content-Type: application/json
+
+{
+  "clientId": "{{CLIENT_ID_FROM_STEP_1}}",
+  "requestedAmount": 30000,
+  "purpose": "shopping",
+  "firstPaymentDate": "2025-10-15",
+  "numberOfInstallments": 24
+}
+
+### 4. Create Contract (Accept an Offer)
+POST http://localhost:3000/contract
+Content-Type: application/json
+
+{
+  "offerId": "{{OFFER_ID_FROM_STEP_3}}"
+}
+
+### 5. List Client Contracts
+GET http://localhost:3000/contract/client/{{CLIENT_ID_FROM_STEP_1}}
+
+---
+
+### EXAMPLE SCENARIOS
+
+### Scenario A: Young Client (25 years) - Shopping
+POST http://localhost:3000/client
+Content-Type: application/json
+
+{
+  "nome": "João Santos",
+  "dataNascimento": "1999-06-20",
+  "cpf": "987.654.321-09", 
+  "rendaLiquidaMensal": 5000.00
+}
+
+### Check Eligibility for Young Client
+POST http://localhost:3000/eligibility/check
+Content-Type: application/json
+
+{
+  "clientId": "clp_replace_with_actual_id",
+  "requestedAmount": 15000,
+  "purpose": "shopping",
+  "firstPaymentDate": "2025-09-30"
+}
+
+### Simulate for Young Client
+POST http://localhost:3000/simulation
+Content-Type: application/json
+
+{
+  "clientId": "clp_replace_with_actual_id",
+  "requestedAmount": 15000,
+  "purpose": "shopping",
+  "firstPaymentDate": "2025-09-30",
+  "numberOfInstallments": 18
+}
+
+---
+
+### Scenario B: Older Client (35 years) - Business Investment
+POST http://localhost:3000/client
+Content-Type: application/json
+
+{
+  "nome": "Ana Costa",
+  "dataNascimento": "1989-12-10",
+  "cpf": "456.789.123-09",
+  "rendaLiquidaMensal": 12000.00
+}
+
+### Check Eligibility for Business Investment
+POST http://localhost:3000/eligibility/check
+Content-Type: application/json
+
+{
+  "clientId": "clp_replace_with_actual_id",
+  "requestedAmount": 50000,
+  "purpose": "business_investment",
+  "firstPaymentDate": "2025-10-05"
+}
+
+### Simulate Business Investment
+POST http://localhost:3000/simulation
+Content-Type: application/json
+
+{
+  "clientId": "clp_replace_with_actual_id",
+  "requestedAmount": 50000,
+  "purpose": "business_investment",
+  "firstPaymentDate": "2025-10-05",
+  "numberOfInstallments": 36
+}
+
+---
+
+### Scenario C: Travel Loan (Fund C should exclude this)
+POST http://localhost:3000/client
+Content-Type: application/json
+
+{
+  "nome": "Pedro Oliveira",
+  "dataNascimento": "1992-08-25",
+  "cpf": "321.654.987-09",
+  "rendaLiquidaMensal": 6000.00
+}
+
+### Check Eligibility for Travel (Fund C should reject)
+POST http://localhost:3000/eligibility/check
+Content-Type: application/json
+
+{
+  "clientId": "clp_replace_with_actual_id",
+  "requestedAmount": 12000,
+  "purpose": "travel",
+  "firstPaymentDate": "2025-09-25"
+}
+
+### Simulate Travel
+POST http://localhost:3000/simulation
+Content-Type: application/json
+
+{
+  "clientId": "clp_replace_with_actual_id",
+  "requestedAmount": 12000,
+  "purpose": "travel",
+  "firstPaymentDate": "2025-09-25",
+  "numberOfInstallments": 12
+}

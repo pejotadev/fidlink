@@ -1,0 +1,43 @@
+### Check Eligibility - Example 1: Young client (25 years) for shopping
+POST http://localhost:3000/eligibility/check
+Content-Type: application/json
+
+{
+  "clientId": "clp_existing_client_id",
+  "requestedAmount": 15000,
+  "purpose": "shopping",
+  "firstPaymentDate": "2025-09-15"
+}
+
+### Check Eligibility - Example 2: Older client (35 years) for business investment
+POST http://localhost:3000/eligibility/check
+Content-Type: application/json
+
+{
+  "clientId": "clp_existing_client_id",
+  "requestedAmount": 50000,
+  "purpose": "business_investment",
+  "firstPaymentDate": "2025-10-01"
+}
+
+### Check Eligibility - Example 3: Young client (20 years) for travel
+POST http://localhost:3000/eligibility/check
+Content-Type: application/json
+
+{
+  "clientId": "clp_existing_client_id",
+  "requestedAmount": 8000,
+  "purpose": "travel",
+  "firstPaymentDate": "2025-09-30"
+}
+
+### Check Eligibility - Example 4: High amount for Fund B test
+POST http://localhost:3000/eligibility/check
+Content-Type: application/json
+
+{
+  "clientId": "clp_existing_client_id",
+  "requestedAmount": 25000,
+  "purpose": "shopping",
+  "firstPaymentDate": "2025-09-20"
+}
