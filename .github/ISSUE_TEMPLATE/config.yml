@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentação
+    url: https://github.com/pejotadev/fidlink/blob/main/API_GUIDE.md
+    about: Consulte nossa documentação completa da API
+
+  - name: 🧪 Exemplos de Uso
+    url: https://github.com/pejotadev/fidlink/blob/main/curl-examples.txt
+    about: Veja exemplos práticos de como usar a API
+
+  - name: 💬 Discussões
+    url: https://github.com/pejotadev/fidlink/discussions
+    about: Participe de discussões sobre o projeto, tire dúvidas gerais ou compartilhe ideias
+
+  - name: 🆘 Ajuda Geral
+    url: https://github.com/pejotadev/fidlink/discussions/categories/q-a
+    about: Para perguntas gerais sobre como usar a API (não bugs específicos)

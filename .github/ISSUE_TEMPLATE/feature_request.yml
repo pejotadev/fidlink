@@ -1,0 +1,192 @@
+name: ✨ Feature Request
+description: Sugerir uma nova funcionalidade para o FidLink API
+title: "[FEATURE] "
+labels: ["enhancement", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        💡 Obrigado por sugerir uma nova funcionalidade! 
+        
+        Suas ideias nos ajudam a tornar o FidLink API ainda melhor.
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Verificações preliminares
+      description: Por favor, confirme que você fez essas verificações antes de sugerir a funcionalidade.
+      options:
+        - label: Procurei por issues similares e não encontrei nenhuma duplicata
+          required: true
+        - label: Li a documentação para ter certeza de que a funcionalidade não existe
+          required: true
+        - label: Esta funcionalidade se alinha com os objetivos do projeto
+          required: true
+
+  - type: textarea
+    id: feature-summary
+    attributes:
+      label: 📋 Resumo da Funcionalidade
+      description: Uma descrição clara e concisa da funcionalidade que você gostaria de ver implementada.
+      placeholder: Gostaria que fosse possível...
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: 🎯 Problema que Resolve
+      description: |
+        Descreva o problema ou necessidade que esta funcionalidade resolveria.
+        Por que esta funcionalidade é importante?
+      placeholder: |
+        Atualmente, quando eu tento fazer X, não consigo porque...
+        Esta funcionalidade resolveria o problema de...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: 💡 Solução Proposta
+      description: |
+        Descreva a solução que você tem em mente.
+        Como você imagina que esta funcionalidade funcionaria?
+      placeholder: |
+        Eu sugiro que...
+        A funcionalidade poderia funcionar assim:
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: 🏷️ Tipo de Funcionalidade
+      description: Que tipo de funcionalidade você está propondo?
+      options:
+        - Nova API endpoint
+        - Melhoria em endpoint existente
+        - Nova validação ou regra de negócio
+        - Melhoria de performance
+        - Recurso de segurança
+        - Melhoria de desenvolvedor (DX)
+        - Documentação
+        - Ferramenta ou script
+        - Outro (especificar nos detalhes)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 📊 Prioridade
+      description: Qual você considera ser a prioridade desta funcionalidade?
+      options:
+        - 🔥 Alta - Crítica para o projeto
+        - 🟡 Média - Importante mas não urgente
+        - 🟢 Baixa - Seria legal ter
+        - 🔵 Quando possível - Não há pressa
+    validations:
+      required: true
+
+  - type: textarea
+    id: api-design
+    attributes:
+      label: 🌐 Design da API (se aplicável)
+      description: |
+        Se você está propondo uma nova endpoint ou mudança na API, 
+        descreva como você imagina que seria o design.
+      placeholder: |
+        ```http
+        POST /api/nova-funcionalidade
+        Content-Type: application/json
+        
+        {
+          "campo": "valor"
+        }
+        ```
+        
+        Resposta:
+        ```json
+        {
+          "resultado": "sucesso"
+        }
+        ```
+      render: http
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: 🎪 Casos de Uso
+      description: |
+        Descreva alguns casos de uso específicos onde esta funcionalidade seria útil.
+      placeholder: |
+        1. Como usuário, eu gostaria de... para que...
+        2. Como desenvolvedor, eu preciso de... para...
+        3. Como administrador, seria útil... porque...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 Alternativas Consideradas
+      description: |
+        Descreva outras soluções ou funcionalidades alternativas que você considerou.
+      placeholder: |
+        Eu também considerei...
+        Outra opção seria...
+        Mas essa abordagem seria melhor porque...
+
+  - type: textarea
+    id: implementation-suggestions
+    attributes:
+      label: 🛠️ Sugestões de Implementação
+      description: |
+        Se você tem ideias sobre como implementar esta funcionalidade, compartilhe aqui.
+        (Não é obrigatório - apenas se você tiver sugestões técnicas)
+      placeholder: |
+        Talvez pudesse ser implementado usando...
+        Seria necessário adicionar...
+        Poderia seguir o padrão de...
+
+  - type: dropdown
+    id: willing-to-help
+    attributes:
+      label: 🤝 Disposição para Ajudar
+      description: Você estaria disposto a ajudar na implementação desta funcionalidade?
+      options:
+        - ✅ Sim, posso implementar
+        - 🤝 Sim, posso ajudar com testes
+        - 📝 Sim, posso ajudar com documentação
+        - 💭 Sim, posso ajudar com design/planejamento
+        - ❌ Não posso ajudar no momento
+        - 🤔 Talvez, dependendo da complexidade
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📎 Contexto Adicional
+      description: |
+        Adicione qualquer outro contexto, screenshots, links ou informações sobre a funcionalidade aqui.
+      placeholder: |
+        Links para funcionalidades similares em outras APIs...
+        Screenshots de como deveria funcionar...
+        Referências técnicas...
+
+  - type: checkboxes
+    id: acceptance-criteria
+    attributes:
+      label: ✅ Critérios de Aceitação (opcional)
+      description: Se você quiser, defina critérios específicos que indicariam que a funcionalidade foi implementada com sucesso.
+      options:
+        - label: A funcionalidade deve ser coberta por testes
+        - label: A funcionalidade deve ser documentada
+        - label: A funcionalidade deve seguir os padrões de código existentes
+        - label: A funcionalidade deve ser compatível com versões anteriores
+        - label: A funcionalidade deve ter validação adequada

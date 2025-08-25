@@ -1,0 +1,164 @@
+name: 🐛 Bug Report
+description: Reportar um bug ou problema no FidLink API
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por reportar um bug! Isso nos ajuda a melhorar o FidLink API.
+        
+        Por favor, preencha as informações abaixo para nos ajudar a entender e reproduzir o problema.
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Verificações preliminares
+      description: Por favor, confirme que você fez essas verificações antes de reportar o bug.
+      options:
+        - label: Procurei por issues similares e não encontrei nenhuma duplicata
+          required: true
+        - label: Li a documentação e não encontrei a solução
+          required: true
+        - label: Testei com a versão mais recente da API
+          required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: 📋 Descrição do Bug
+      description: Uma descrição clara e concisa do bug que você encontrou.
+      placeholder: Descreva o que aconteceu...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: 🔄 Passos para Reproduzir
+      description: Passos para reproduzir o comportamento
+      placeholder: |
+        1. Faça uma requisição para '...'
+        2. Com os dados '....'
+        3. Veja o erro
+      value: |
+        1. 
+        2. 
+        3. 
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: ✅ Comportamento Esperado
+      description: Uma descrição clara e concisa do que você esperava que acontecesse.
+      placeholder: Eu esperava que...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: ❌ Comportamento Atual
+      description: Uma descrição clara e concisa do que realmente aconteceu.
+      placeholder: Em vez disso, o que aconteceu foi...
+    validations:
+      required: true
+
+  - type: textarea
+    id: api-request
+    attributes:
+      label: 🌐 Requisição da API
+      description: |
+        Se aplicável, inclua a requisição HTTP que causou o problema.
+        **Remova informações sensíveis como tokens, senhas, etc.**
+      placeholder: |
+        ```bash
+        curl -X POST http://localhost:3000/endpoint \
+          -H "Content-Type: application/json" \
+          -d '{"campo": "valor"}'
+        ```
+      render: bash
+
+  - type: textarea
+    id: api-response
+    attributes:
+      label: 📤 Resposta da API
+      description: |
+        Se aplicável, inclua a resposta HTTP recebida.
+        **Remova informações sensíveis.**
+      placeholder: |
+        ```json
+        {
+          "error": "Mensagem de erro",
+          "statusCode": 400
+        }
+        ```
+      render: json
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: 🌍 Ambiente
+      description: Em que ambiente você está executando a API?
+      options:
+        - Desenvolvimento local
+        - Docker local
+        - Produção (Vercel)
+        - Outro (especificar nos detalhes adicionais)
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: 📦 Versão do Node.js
+      description: Qual versão do Node.js você está usando?
+      placeholder: "18.17.0"
+    validations:
+      required: true
+
+  - type: input
+    id: npm-version
+    attributes:
+      label: 📦 Versão do NPM
+      description: Qual versão do NPM você está usando?
+      placeholder: "9.6.7"
+
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: 💻 Sistema Operacional
+      description: Qual sistema operacional você está usando?
+      options:
+        - Windows
+        - macOS
+        - Linux (Ubuntu)
+        - Linux (outras distribuições)
+        - Outro
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📎 Contexto Adicional
+      description: |
+        Adicione qualquer outro contexto sobre o problema aqui.
+        - Screenshots
+        - Logs
+        - Configurações específicas
+        - Etc.
+      placeholder: Qualquer informação adicional que possa ajudar...
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📋 Logs
+      description: |
+        Se aplicável, adicione logs relevantes aqui.
+        **Remova informações sensíveis.**
+      placeholder: |
+        Cole os logs aqui...
+      render: text

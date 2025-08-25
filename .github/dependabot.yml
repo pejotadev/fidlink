@@ -1,0 +1,87 @@
+version: 2
+updates:
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "pejotadev"
+    assignees:
+      - "pejotadev"
+    commit-message:
+      prefix: "⬆️"
+      prefix-development: "⬆️ dev"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "automated"
+    # Group development dependencies together
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+        patterns:
+          - "@types/*"
+          - "eslint*"
+          - "prettier*"
+          - "jest*"
+          - "supertest*"
+          - "ts-*"
+          - "typescript"
+      production-dependencies:
+        dependency-type: "production"
+        patterns:
+          - "@nestjs/*"
+          - "prisma*"
+          - "class-*"
+          - "rxjs"
+    # Auto-merge minor and patch updates for dev dependencies
+    auto-merge:
+      - dependency-type: "development"
+        update-type: "semver:patch"
+      - dependency-type: "development"
+        update-type: "semver:minor"
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:30"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "pejotadev"
+    assignees:
+      - "pejotadev"
+    commit-message:
+      prefix: "🔧"
+      include: "scope"
+    labels:
+      - "github-actions"
+      - "automated"
+
+  # Enable version updates for Docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 2
+    reviewers:
+      - "pejotadev"
+    assignees:
+      - "pejotadev"
+    commit-message:
+      prefix: "🐳"
+      include: "scope"
+    labels:
+      - "docker"
+      - "automated"

@@ -1,6 +1,28 @@
-# FidLink API
+# 🏦 FidLink API
 
-API NestJS modular para gestão de clientes com Prisma e MySQL.
+<div align="center">
+
+[![Build Status](https://github.com/pejotadev/fidlink/actions/workflows/ci.yml/badge.svg)](https://github.com/pejotadev/fidlink/actions/workflows/ci.yml)
+[![Coverage Status](https://img.shields.io/codecov/c/github/pejotadev/fidlink)](https://codecov.io/gh/pejotadev/fidlink)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
+[![NestJS](https://img.shields.io/badge/nestjs-v10.0.0-red)](https://nestjs.com/)
+[![TypeScript](https://img.shields.io/badge/typescript-v5.0.0-blue)](https://www.typescriptlang.org/)
+
+[![GitHub Issues](https://img.shields.io/github/issues/pejotadev/fidlink)](https://github.com/pejotadev/fidlink/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/pejotadev/fidlink)](https://github.com/pejotadev/fidlink/pulls)
+[![Last Commit](https://img.shields.io/github/last-commit/pejotadev/fidlink)](https://github.com/pejotadev/fidlink/commits/main)
+[![Dependabot](https://img.shields.io/badge/dependabot-enabled-brightgreen)](https://github.com/pejotadev/fidlink/pulls?q=is%3Apr+author%3Aapp%2Fdependabot)
+
+**🚀 Sistema completo de crédito pessoal com Domain-Driven Design, cache híbrido e arquitetura robusta.**
+
+[📖 Documentação](API_GUIDE.md) • [🧪 Testar API](curl-examples.txt) • [🐛 Reportar Bug](https://github.com/pejotadev/fidlink/issues/new/choose) • [✨ Solicitar Feature](https://github.com/pejotadev/fidlink/issues/new/choose)
+
+</div>
+
+---
+
+API NestJS completa para gestão de sistema de crédito pessoal com eligibilidade, simulação e contratos.
 
 ## Funcionalidades
 

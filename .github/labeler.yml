@@ -1,0 +1,83 @@
+# Pull request labeler configuration
+# https://github.com/actions/labeler
+
+# Documentation changes
+documentation:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - "**/*.md"
+      - "docs/**/*"
+      - "API_GUIDE.md"
+      - "curl-examples.txt"
+
+# Source code changes
+source:
+  - changed-files:
+    - any-glob-to-any-file: "src/**/*"
+
+# Test changes
+tests:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - "test/**/*"
+      - "**/*.spec.ts"
+      - "**/*.test.ts"
+
+# Configuration changes
+config:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - "*.json"
+      - "*.yml"
+      - "*.yaml"
+      - ".github/**/*"
+      - "docker-compose.yml"
+      - "Dockerfile"
+      - "tsconfig.json"
+      - "nest-cli.json"
+
+# Database changes
+database:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - "prisma/**/*"
+      - "src/prisma/**/*"
+
+# Dependencies
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - "package.json"
+      - "package-lock.json"
+
+# API changes
+api:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - "src/presentation/controllers/**/*"
+      - "src/application/**/*.dto.ts"
+
+# Domain changes
+domain:
+  - changed-files:
+    - any-glob-to-any-file: "src/domain/**/*"
+
+# Infrastructure changes
+infrastructure:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - "src/infrastructure/**/*"
+      - "scripts/**/*"
+
+# Cache related
+cache:
+  - changed-files:
+    - any-glob-to-any-file: "src/infrastructure/cache/**/*"
+
+# Security related
+security:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - "src/domain/client/utils/cpf.utils.ts"
+      - "**/*security*"
+      - "**/*auth*"
